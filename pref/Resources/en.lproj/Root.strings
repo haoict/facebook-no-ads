@@ -7,6 +7,8 @@
   "MAIN_PREFERENCES" = "Main Preferences";
   "NO_ADS" = "No Ads";
   "REMOVE_ADS_IN_NEWS_FEED" = "Remove Ads in News Feed and Video";
+  "CAN_SAVE_VIDEO" = "Can Save Video";
+  "LONG_PRESS_ON_VIDEO_TO_SAVE" = "Long press on video to save";
   "OTHER_PREFERENCES" = "Other Preferences";
   "RESET_SETTINGS" = "Reset Settings";
   "SUPPORT_ME" = "Support Me";
