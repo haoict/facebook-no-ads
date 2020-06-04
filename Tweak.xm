@@ -5,12 +5,16 @@
  */
 BOOL noads;
 BOOL canSaveVideo;
+BOOL hideNewsFeedComposer;
+BOOL hideNewsFeedStories;
 
 static void reloadPrefs() {
   NSDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:@PLIST_PATH] ?: [@{} mutableCopy];
 
   noads = [[settings objectForKey:@"noads"] ?: @(YES) boolValue];
   canSaveVideo = [[settings objectForKey:@"canSaveVideo"] ?: @(YES) boolValue];
+  hideNewsFeedComposer = [[settings objectForKey:@"hideNewsFeedComposer"] ?: @(NO) boolValue];
+  hideNewsFeedStories = [[settings objectForKey:@"hideNewsFeedStories"] ?: @(NO) boolValue];
 }
 
 %group NoAds
@@ -19,12 +23,55 @@ static void reloadPrefs() {
       return nil;
     }
   %end
+%end
 
-  // %hook FBNewsFeedViewControllerConfiguration
-  //   - (BOOL)shouldHideComposer {
-  //     return TRUE;
-  //   }
-  // %end
+%group HideNewsFeedComposer
+  %hook FBNewsFeedViewControllerConfiguration
+    - (BOOL)shouldHideComposer {
+      return TRUE;
+    }
+  %end
+%end
+
+%group HideNewsFeedStories
+  %hook FBComponentCollectionViewDataSource
+    - (id)collectionView:(id)arg1 cellForItemAtIndexPath:(NSIndexPath *)arg2 {
+      id orig = %orig;
+      if (![arg1 isKindOfClass:%c(FBNewsFeedCollectionView)]) {
+        return orig;
+      }
+
+      int storySectionNumber = 1;
+      if (hideNewsFeedComposer) {
+        storySectionNumber = 0;
+      }
+
+      if (arg2.section == storySectionNumber) {
+        [orig setHidden: YES];
+      } else {
+        [orig setHidden: NO];
+      }
+      return orig;
+    }
+
+    - (CGSize)collectionView:(id)arg1 layout:(id)arg2 sizeForItemAtIndexPath:(NSIndexPath *)arg3 {
+      CGSize orig = %orig;
+      if (![arg1 isKindOfClass:%c(FBNewsFeedCollectionView)]) {
+        return orig;
+      }
+
+      int storySectionNumber = 1;
+      if (hideNewsFeedComposer) {
+        storySectionNumber = 0;
+      }
+
+      if (arg3.section == storySectionNumber) {
+        orig.height = 1;
+        orig.width = 1;
+      }
+      return orig;
+    }
+  %end
 %end
 
 %group CanSaveVideo
@@ -111,6 +158,14 @@ static void reloadPrefs() {
 
   if (canSaveVideo) {
     %init(CanSaveVideo);
+  }
+
+  if (hideNewsFeedComposer) {
+    %init(HideNewsFeedComposer);
+  }
+
+  if (hideNewsFeedStories) {
+    %init(HideNewsFeedStories);
   }
 }
 

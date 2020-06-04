@@ -73,6 +73,44 @@
         <string>com.haoict.facebooknoadspref/PrefChanged</string>
       </dict>
 
+      <dict>
+        <key>cell</key>
+        <string>PSSwitchCell</string>
+        <key>cellClass</key>
+        <string>HPSSwitchCell</string>
+        <key>default</key>
+        <false/>
+        <key>defaults</key>
+        <string>com.haoict.facebooknoadspref</string>
+        <key>key</key>
+        <string>hideNewsFeedComposer</string>
+        <key>label</key>
+        <string>HIDE_COMPOSER</string>
+        <key>subtitle</key>
+        <string>HIDE_COMPOSER_ON_NEWS_FEED</string>
+        <key>PostNotification</key>
+        <string>com.haoict.facebooknoadspref/PrefChanged</string>
+      </dict>
+
+      <dict>
+        <key>cell</key>
+        <string>PSSwitchCell</string>
+        <key>cellClass</key>
+        <string>HPSSwitchCell</string>
+        <key>default</key>
+        <false/>
+        <key>defaults</key>
+        <string>com.haoict.facebooknoadspref</string>
+        <key>key</key>
+        <string>hideNewsFeedStories</string>
+        <key>label</key>
+        <string>HIDE_STORIES</string>
+        <key>subtitle</key>
+        <string>HIDE_STORIES_ON_NEWS_FEED</string>
+        <key>PostNotification</key>
+        <string>com.haoict.facebooknoadspref/PrefChanged</string>
+      </dict>
+
       <!-- Support Me -->
       <dict>
         <key>cell</key>

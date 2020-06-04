@@ -5,13 +5,15 @@
 
 Free & Open Source Tweak for Facebook app on iOS!
 
-<img src="https://haoict.github.io/cydia/images/tnabanner.jpg" alt="TikTok God" width="414"/>
+<img src="https://haoict.github.io/cydia/images/fnabanner.jpg" alt="Facebook No Ads" width="414"/>
 
 ## Features
 - Remove Ads
-- Lightweight
+- Can Download Video (long press to download)
+- Hide Composer on News Feed
+- Hide Stories on News Feed
 - Support iOS 10 (not tested) - 11 (tested) - 12 (tested) - 13 (tested)
-- Support latest Twitter version (If it doesn't work, you should update the app to latest version)
+- Support latest Facebook version (If it doesn't work, you should update the app to latest version >= 260.0)
 
 ## Cydia Repo
 
@@ -19,7 +21,7 @@ Free & Open Source Tweak for Facebook app on iOS!
 
 ## Screenshot
 
-<img src="https://haoict.github.io/cydia/images/tnapref.png" alt="Twitter No Ads Preferences" width="280"/>
+<img src="https://haoict.github.io/cydia/images/fnapref.png" alt="Facebook No Ads Preferences" width="280"/>
 
 ## Building
 

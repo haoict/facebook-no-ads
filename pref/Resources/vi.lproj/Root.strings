@@ -9,6 +9,10 @@
   "REMOVE_ADS_IN_NEWS_FEED" = "Gỡ quảng cáo ở News Feed and Video";
   "CAN_SAVE_VIDEO" = "Có thể tải video";
   "LONG_PRESS_ON_VIDEO_TO_SAVE" = "Ấn và giữ video để lưu";
+  "HIDE_COMPOSER" = "Ẩn Bạn đang nghĩ gì";
+  "HIDE_COMPOSER_ON_NEWS_FEED" = "Ẩn Bạn đang nghĩ gì ở Bảng tin";
+  "HIDE_STORIES" = "Ẩn Story";
+  "HIDE_STORIES_ON_NEWS_FEED" = "Ẩn Story ở Bảng tin";
   "OTHER_PREFERENCES" = "Tùy chỉnh phụ";
   "RESET_SETTINGS" = "Đặt lại tùy chỉnh";
   "SUPPORT_ME" = "Hỗ trợ tôi";

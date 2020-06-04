@@ -9,11 +9,11 @@ Description: Free & Open Source Tweak for Facebook
  . 
  Features:
  - Remove Ads
- - Can Save Video
- - Hide Stories
- - Lightweight
+ - Can Download Video (long press to download)
+ - Hide Composer on News Feed
+ - Hide Stories on News Feed
  - Support iOS 10 (not tested) - 11 (tested) - 12 (tested) - 13 (tested)
- - Support latest Facebook version (If it doesn't work, you should update the app to latest version)
+ - Support latest Facebook version (If it doesn't work, you should update the app to latest version >= 260.0)
  . 
  I work very hard to make good, free and open source tweaks for everyone
  If you want to support, you can buy me a coffee at https://www.paypal.me/haoict

@@ -2,8 +2,6 @@ ARCHS = armv7 arm64 arm64e
 TARGET = iphone:clang:12.2:10.0
 INSTALL_TARGET_PROCESSES = Facebook Preferences
 
-THEOS_DEVICE_IP = 192.168.43.209
-
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = facebooknoads
