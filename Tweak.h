@@ -4,14 +4,18 @@
 #define PLIST_PATH "/var/mobile/Library/Preferences/com.haoict.facebooknoadspref.plist"
 #define PREF_CHANGED_NOTIF "com.haoict.facebooknoadspref/PrefChanged"
 
+@interface CKDataSourceState : NSObject
+@property(readonly, copy, nonatomic) NSArray *sections;
+@end
+
+@interface FBComponentCollectionViewDataSource : NSObject
+- (CKDataSourceState *)dataSourceState;
+- (BOOL)shouldHideSectionNumber:(int)sectionNumber;
+@end
+
 @interface FBVideoPlaybackItem : NSObject
-@property(readonly, copy, nonatomic) NSURL *sphericalPlaybackHDURL;
-@property(readonly, copy, nonatomic) NSURL *sphericalPlaybackURL;
-@property(readonly, copy, nonatomic) NSURL *HLSPlaybackURL;
-@property(readonly, copy, nonatomic) NSURL *DashPlaybackURL;
 @property(readonly, copy, nonatomic) NSURL *HDPlaybackURL;
 @property(readonly, copy, nonatomic) NSURL *SDPlaybackURL;
-@property(readonly, copy, nonatomic) NSArray *instreamVideoAdBreaks;
 @end
 
 @interface FBVideoPlaybackController : NSObject

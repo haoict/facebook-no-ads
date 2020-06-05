@@ -6,6 +6,7 @@
 BOOL noads;
 BOOL canSaveVideo;
 BOOL hideNewsFeedComposer;
+BOOL hideNewsFeedRoom;
 BOOL hideNewsFeedStories;
 
 static void reloadPrefs() {
@@ -14,6 +15,7 @@ static void reloadPrefs() {
   noads = [[settings objectForKey:@"noads"] ?: @(YES) boolValue];
   canSaveVideo = [[settings objectForKey:@"canSaveVideo"] ?: @(YES) boolValue];
   hideNewsFeedComposer = [[settings objectForKey:@"hideNewsFeedComposer"] ?: @(NO) boolValue];
+  hideNewsFeedRoom = [[settings objectForKey:@"hideNewsFeedRoom"] ?: @(NO) boolValue];
   hideNewsFeedStories = [[settings objectForKey:@"hideNewsFeedStories"] ?: @(NO) boolValue];
 }
 
@@ -33,7 +35,7 @@ static void reloadPrefs() {
   %end
 %end
 
-%group HideNewsFeedStories
+%group HideNewsFeedChatRoomStories
   %hook FBComponentCollectionViewDataSource
     - (id)collectionView:(id)arg1 cellForItemAtIndexPath:(NSIndexPath *)arg2 {
       id orig = %orig;
@@ -41,12 +43,7 @@ static void reloadPrefs() {
         return orig;
       }
 
-      int storySectionNumber = 1;
-      if (hideNewsFeedComposer) {
-        storySectionNumber = 0;
-      }
-
-      if (arg2.section == storySectionNumber) {
+      if ([self shouldHideSectionNumber:arg2.section]) {
         [orig setHidden: YES];
       } else {
         [orig setHidden: NO];
@@ -60,16 +57,25 @@ static void reloadPrefs() {
         return orig;
       }
 
-      int storySectionNumber = 1;
-      if (hideNewsFeedComposer) {
-        storySectionNumber = 0;
-      }
-
-      if (arg3.section == storySectionNumber) {
+      if ([self shouldHideSectionNumber:arg3.section]) {
         orig.height = 1;
         orig.width = 1;
       }
       return orig;
+    }
+
+    %new
+    - (BOOL)shouldHideSectionNumber:(int)sectionNumber {
+      if (hideNewsFeedComposer) {
+        if (sectionNumber == 0) {
+          return TRUE;
+        }
+      } else {
+        if (sectionNumber == 1) {
+          return TRUE;
+        }
+      }
+      return FALSE;
     }
   %end
 %end
@@ -164,8 +170,8 @@ static void reloadPrefs() {
     %init(HideNewsFeedComposer);
   }
 
-  if (hideNewsFeedStories) {
-    %init(HideNewsFeedStories);
+  if (hideNewsFeedRoom || hideNewsFeedStories) {
+    %init(HideNewsFeedChatRoomStories);
   }
 }
 
