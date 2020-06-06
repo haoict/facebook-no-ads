@@ -37,6 +37,10 @@ make do
 
 Contributions of any kind welcome!
 
+## Copyright Notice
+
+The "Remove Ads" function is based on [FBSpNOsor](https://github.com/jacobcxdev/FBSpNOsor) by [jacobcxdev](https://github.com/jacobcxdev).  
+
 ## License
 
 Licensed under the [GPLv3 License](./LICENSE), Copyright © 2020-present Hao Nguyen <hao.ict56@gmail.com>
