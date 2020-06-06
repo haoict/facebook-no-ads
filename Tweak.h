@@ -4,6 +4,10 @@
 #define PLIST_PATH "/var/mobile/Library/Preferences/com.haoict.facebooknoadspref.plist"
 #define PREF_CHANGED_NOTIF "com.haoict.facebooknoadspref/PrefChanged"
 
+@interface FBVideoChannelPlaylistItem
+- (BOOL)isSponsored;
+@end
+
 @interface CKDataSourceState : NSObject
 @property(readonly, copy, nonatomic) NSArray *sections;
 @end

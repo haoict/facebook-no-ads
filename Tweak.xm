@@ -6,7 +6,6 @@
 BOOL noads;
 BOOL canSaveVideo;
 BOOL hideNewsFeedComposer;
-BOOL hideNewsFeedRoom;
 BOOL hideNewsFeedStories;
 
 static void reloadPrefs() {
@@ -15,7 +14,6 @@ static void reloadPrefs() {
   noads = [[settings objectForKey:@"noads"] ?: @(YES) boolValue];
   canSaveVideo = [[settings objectForKey:@"canSaveVideo"] ?: @(YES) boolValue];
   hideNewsFeedComposer = [[settings objectForKey:@"hideNewsFeedComposer"] ?: @(NO) boolValue];
-  hideNewsFeedRoom = [[settings objectForKey:@"hideNewsFeedRoom"] ?: @(NO) boolValue];
   hideNewsFeedStories = [[settings objectForKey:@"hideNewsFeedStories"] ?: @(NO) boolValue];
 }
 
@@ -23,6 +21,13 @@ static void reloadPrefs() {
   %hook FBMemSponsoredData
     - (id)initWithFBTree:(void *)arg1 {
       return nil;
+    }
+  %end
+
+  %hook FBVideoChannelPlaylistItem
+    - (id)Bi:(id)arg1 :(id)arg2 :(id)arg3 :(id)arg4 :(id)arg5 :(id)arg6 :(id)arg7 {
+      id orig = %orig;
+      return [orig isSponsored] ? nil : orig;
     }
   %end
 %end
@@ -67,11 +72,11 @@ static void reloadPrefs() {
     %new
     - (BOOL)shouldHideSectionNumber:(int)sectionNumber {
       if (hideNewsFeedComposer) {
-        if (sectionNumber == 0) {
+        if (([self dataSourceState].sections.count == 3 && sectionNumber == 0) || ([self dataSourceState].sections.count == 4 && sectionNumber == 1)) {
           return TRUE;
         }
       } else {
-        if (sectionNumber == 1) {
+        if (([self dataSourceState].sections.count == 4 && sectionNumber == 1) || ([self dataSourceState].sections.count == 5 && sectionNumber == 2)) {
           return TRUE;
         }
       }
@@ -98,11 +103,17 @@ static void reloadPrefs() {
     %new
     - (void)handleLongPress:(UILongPressGestureRecognizer *)sender {
       if (sender.state == UIGestureRecognizerStateBegan) {
+        FBVideoPlaybackItem *videoPlaybackItem = [self.controller currentVideoPlaybackItem];
+        if (!videoPlaybackItem) {
+          [HCommon showAlertMessage:@"Can't find Video source, please report to developer" withTitle:@"Error" viewController:nil];
+          return;
+        }
+
         UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
         [alert addAction:[UIAlertAction actionWithTitle:@"Download Video" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-          NSURL *videoURL = [self.controller currentVideoPlaybackItem].HDPlaybackURL;
+          NSURL *videoURL = videoPlaybackItem.HDPlaybackURL;
           if (!videoURL) {
-            videoURL = [self.controller currentVideoPlaybackItem].SDPlaybackURL;
+            videoURL = videoPlaybackItem.SDPlaybackURL;
           }
           NSString *videoURLString = videoURL.absoluteString;
           [HCommon showToastMessage:@"Downloading in background..." withTitle:@"Please wait" timeout:1.0 viewController:nil];
@@ -133,15 +144,36 @@ static void reloadPrefs() {
       if (sender.state == UIGestureRecognizerStateBegan) {
         UIView *view = self.superview.superview.superview.superview;
         if (![view isKindOfClass:%c(VideoContainerView)]) {
-          view = self.superview.subviews[1].subviews[0].subviews[0];
+          @try {
+            view = self.superview.subviews[1].subviews[0].subviews[0];
+          } @catch (NSException *exception) { }
+        }
+        if (![view isKindOfClass:%c(VideoContainerView)]) {
+          @try {
+            view = self.superview.subviews[2].subviews[0].subviews[0];
+          } @catch (NSException *exception) { }
+        }
+        if (![view isKindOfClass:%c(VideoContainerView)]) {
+          @try {
+            view = self.superview.subviews[3].subviews[0].subviews[0];
+          } @catch (NSException *exception) { }
+        }
+        if (![view isKindOfClass:%c(VideoContainerView)]) {
+          [HCommon showAlertMessage:@"Can't find Video container, please report to developer" withTitle:@"Error" viewController:nil];
+          return;
         }
         VideoContainerView *videoContainerView = (VideoContainerView *)view;
+        FBVideoPlaybackItem *videoPlaybackItem = [videoContainerView.controller currentVideoPlaybackItem];
+        if (!videoPlaybackItem) {
+          [HCommon showAlertMessage:@"Can't find Video source, please report to developer" withTitle:@"Error" viewController:nil];
+          return;
+        }
 
         UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
         [alert addAction:[UIAlertAction actionWithTitle:@"Download Video" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-          NSURL *videoURL = [videoContainerView.controller currentVideoPlaybackItem].HDPlaybackURL;
+          NSURL *videoURL = videoPlaybackItem.HDPlaybackURL;
           if (!videoURL) {
-            videoURL = [videoContainerView.controller currentVideoPlaybackItem].SDPlaybackURL;
+            videoURL = videoPlaybackItem.SDPlaybackURL;
           }
           NSString *videoURLString = videoURL.absoluteString;
           [HCommon showToastMessage:@"Downloading in background..." withTitle:@"Please wait" timeout:1.0 viewController:nil];
@@ -170,7 +202,7 @@ static void reloadPrefs() {
     %init(HideNewsFeedComposer);
   }
 
-  if (hideNewsFeedRoom || hideNewsFeedStories) {
+  if (hideNewsFeedStories) {
     %init(HideNewsFeedChatRoomStories);
   }
 }
