@@ -17,6 +17,30 @@ static void reloadPrefs() {
   hideNewsFeedStories = [[settings objectForKey:@"hideNewsFeedStories"] ?: @(NO) boolValue];
 }
 
+static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIViewController *viewController) {
+  UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
+  [alert addAction:[UIAlertAction actionWithTitle:@"Download Video - HD" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    NSURL *videoURL = videoPlaybackItem.HDPlaybackURL;
+    if (!videoURL) {
+      [HCommon showAlertMessage:@"This video doesn't have HD quality, please select other quality" withTitle:@"No HD quality" viewController:viewController];
+      return;
+    }
+    NSString *videoURLString = videoURL.absoluteString;
+    [[[HDownloadMediaWithProgress alloc] init] checkPermissionToPhotosAndDownload:videoURLString appendExtension:nil mediaType:Video toAlbum:@"Facebook" viewController:viewController];
+  }]];
+  [alert addAction:[UIAlertAction actionWithTitle:@"Download Video - SD" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    NSURL *videoURL = videoPlaybackItem.SDPlaybackURL;
+    if (!videoURL) {
+      [HCommon showAlertMessage:@"This video doesn't have SD quality, please select other quality" withTitle:@"No SD quality" viewController:viewController];
+      return;
+    }
+    NSString *videoURLString = videoURL.absoluteString;
+    [[[HDownloadMediaWithProgress alloc] init] checkPermissionToPhotosAndDownload:videoURLString appendExtension:nil mediaType:Video toAlbum:@"Facebook" viewController:viewController];
+  }]];
+  [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+  [viewController presentViewController:alert animated:YES completion:nil];
+}
+
 %group NoAds
   %hook FBMemNewsFeedEdge
     - (id)initWithFBTree:(void *)arg1 {
@@ -118,18 +142,7 @@ static void reloadPrefs() {
           return;
         }
 
-        UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Download Video" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-          NSURL *videoURL = videoPlaybackItem.HDPlaybackURL;
-          if (!videoURL) {
-            videoURL = videoPlaybackItem.SDPlaybackURL;
-          }
-          NSString *videoURLString = videoURL.absoluteString;
-          [HCommon showToastMessage:@"Downloading in background..." withTitle:@"Please wait" timeout:1.0 viewController:nil];
-          [HDownloadMedia checkPermissionToPhotosAndDownload:videoURLString appendExtension:nil mediaType:Video toAlbum:@"Facebook"];
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-        [[self reactViewController] presentViewController:alert animated:YES completion:nil];
+        showDownloadVideoAlert(videoPlaybackItem, [self reactViewController]);
       }
     }
   %end
@@ -178,18 +191,7 @@ static void reloadPrefs() {
           return;
         }
 
-        UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Download Video" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-          NSURL *videoURL = videoPlaybackItem.HDPlaybackURL;
-          if (!videoURL) {
-            videoURL = videoPlaybackItem.SDPlaybackURL;
-          }
-          NSString *videoURLString = videoURL.absoluteString;
-          [HCommon showToastMessage:@"Downloading in background..." withTitle:@"Please wait" timeout:1.0 viewController:nil];
-          [HDownloadMedia checkPermissionToPhotosAndDownload:videoURLString appendExtension:nil mediaType:Video toAlbum:@"Facebook"];
-        }]];
-        [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-        [[self reactViewController] presentViewController:alert animated:YES completion:nil];
+        showDownloadVideoAlert(videoPlaybackItem, [self reactViewController]);
       }
     }
   %end

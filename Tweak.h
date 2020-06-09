@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <libhdev/HUtilities/HDownloadMedia.h>
+#import <libhdev/HUtilities/HDownloadMediaWithProgress.h>
 
 #define PLIST_PATH "/var/mobile/Library/Preferences/com.haoict.facebooknoadspref.plist"
 #define PREF_CHANGED_NOTIF "com.haoict.facebooknoadspref/PrefChanged"

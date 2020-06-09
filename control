@@ -1,7 +1,7 @@
 Package: com.haoict.facebooknoads
 Name: Facebook No Ads
-Depends: mobilesubstrate, preferenceloader, com.haoict.libhdev (>= 2.0.0), firmware (>= 10)
-Version: 1.0.2
+Depends: mobilesubstrate, preferenceloader, com.haoict.libhdev (>= 3.0.0), firmware (>= 10)
+Version: 1.1.0
 Architecture: iphoneos-arm
 Description: Free & Open Source Tweak for Facebook
  Free & Open Source Tweak for Facebook
