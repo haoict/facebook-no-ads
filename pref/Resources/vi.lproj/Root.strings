@@ -11,8 +11,8 @@
   "LONG_PRESS_ON_VIDEO_TO_SAVE" = "Ấn và giữ video để lưu";
   "HIDE_COMPOSER" = "Ẩn Bạn đang nghĩ gì";
   "HIDE_COMPOSER_ON_NEWS_FEED" = "Ẩn Bạn đang nghĩ gì ở Bảng tin";
-  "HIDE_STORIES" = "Ẩn Story (beta)";
-  "HIDE_STORIES_ON_NEWS_FEED" = "Ẩn Story ở Bảng tin";
+  "HIDE_ROOM_AND_STORIES" = "Ẩn Room & Stories";
+  "HIDE_ROOM_AND_STORIES_ON_NEWS_FEED" = "Ẩn Phòng họp & Stories ở Bảng tin";
   "OTHER_PREFERENCES" = "Tùy chỉnh phụ";
   "RESET_SETTINGS" = "Đặt lại tùy chỉnh";
   "SUPPORT_ME" = "Hỗ trợ tôi";

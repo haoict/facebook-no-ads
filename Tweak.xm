@@ -105,11 +105,11 @@ static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIVie
     %new
     - (BOOL)shouldHideSectionNumber:(int)sectionNumber {
       if (hideNewsFeedComposer) {
-        if (([self dataSourceState].sections.count == 3 && sectionNumber == 0) || ([self dataSourceState].sections.count == 4 && sectionNumber == 1)) {
+        if (([self dataSourceState].sections.count == 3 && sectionNumber == 0) || ([self dataSourceState].sections.count == 4 && (sectionNumber == 0 || sectionNumber == 1))) {
           return TRUE;
         }
       } else {
-        if (([self dataSourceState].sections.count == 4 && sectionNumber == 1) || ([self dataSourceState].sections.count == 5 && sectionNumber == 2)) {
+        if (([self dataSourceState].sections.count == 4 && sectionNumber == 1) || ([self dataSourceState].sections.count == 5 && (sectionNumber == 1 || sectionNumber == 2))) {
           return TRUE;
         }
       }

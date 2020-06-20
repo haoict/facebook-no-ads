@@ -104,9 +104,9 @@
         <key>key</key>
         <string>hideNewsFeedStories</string>
         <key>label</key>
-        <string>HIDE_STORIES</string>
+        <string>HIDE_ROOM_AND_STORIES</string>
         <key>subtitle</key>
-        <string>HIDE_STORIES_ON_NEWS_FEED</string>
+        <string>HIDE_ROOM_AND_STORIES_ON_NEWS_FEED</string>
         <key>PostNotification</key>
         <string>com.haoict.facebooknoadspref/PrefChanged</string>
       </dict>
