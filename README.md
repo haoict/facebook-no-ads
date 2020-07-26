@@ -33,7 +33,8 @@ make do
 
 ## Contributors
 
-[haoict](https://github.com/haoict)
+[haoict](https://github.com/haoict)  
+jaideejung007  
 
 Contributions of any kind welcome!
 
