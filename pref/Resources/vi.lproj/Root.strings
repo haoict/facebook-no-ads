@@ -9,6 +9,10 @@
   "REMOVE_ADS_IN_NEWS_FEED" = "Gỡ quảng cáo ở News Feed and Video";
   "CAN_SAVE_VIDEO" = "Có thể tải video";
   "LONG_PRESS_ON_VIDEO_TO_SAVE" = "Ấn và giữ video để lưu";
+  "CAN_SAVE_STORY" = "Có thể tải Story";
+  "PRESS_SAVE_BUTTON_AT_BOTTOM_RIGHT_CORNER_TO_SAVE" = "Nhấn nút ở phía dưới bên phải để tải";
+  "DISABLE_STORY_SEEN" = "Tắt đã xem story";
+  "SEE_FRIENDS_STORY_WITHOUT_LETTING_THEM_KNOW" = "Xem story mà người kia không biết";
   "HIDE_COMPOSER" = "Ẩn Bạn đang nghĩ gì";
   "HIDE_COMPOSER_ON_NEWS_FEED" = "Ẩn Bạn đang nghĩ gì ở Bảng tin";
   "HIDE_ROOM_AND_STORIES" = "Ẩn Room & Stories";

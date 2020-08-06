@@ -9,6 +9,10 @@
   "REMOVE_ADS_IN_NEWS_FEED" = "ลบโฆษณาในหน้าฟีดข่าวและหน้าวิดีโอ";
   "CAN_SAVE_VIDEO" = "บันทึกวิดีโอได้";
   "LONG_PRESS_ON_VIDEO_TO_SAVE" = "แตะค้างไว้ที่วิดีโอเพื่อบันทึก";
+  "CAN_SAVE_STORY" = "สามารถบันทึกเรื่องราว";
+  "PRESS_SAVE_BUTTON_AT_BOTTOM_RIGHT_CORNER_TO_SAVE" = "กดปุ่มบันทึกที่มุมล่างขวาเพื่อบันทึก";
+  "DISABLE_STORY_SEEN" = "ปิดการใช้งานเรื่องราวที่เห็น";
+  "SEE_FRIENDS_STORY_WITHOUT_LETTING_THEM_KNOW" = "ดูเรื่องราวของเพื่อนโดยไม่บอกให้รู้";
   "HIDE_COMPOSER" = "ซ่อนแถบสร้างโพสต์";
   "HIDE_COMPOSER_ON_NEWS_FEED" = "แถบสร้างโพสต์ คือ แถบที่แสดงบนฟีดข่าวในหน้าแรก";
   "HIDE_ROOM_AND_STORIES" = "ซ่อนห้องและสตอรี่";

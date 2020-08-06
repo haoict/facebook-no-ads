@@ -1,7 +1,7 @@
 Package: com.haoict.facebooknoads
 Name: Facebook No Ads
-Depends: mobilesubstrate, preferenceloader, com.haoict.libhdev (>= 4.1.0), firmware (>= 10)
-Version: 1.2.0
+Depends: mobilesubstrate, preferenceloader, com.haoict.libhdev (>= 4.5.0), firmware (>= 10)
+Version: 1.3.0
 Architecture: iphoneos-arm
 Description: Free & Open Source Tweak for Facebook
  Free & Open Source Tweak for Facebook
@@ -10,12 +10,12 @@ Description: Free & Open Source Tweak for Facebook
  Features:
  - Remove Ads
  - Can Download Video (long press to download)
+ - Can Download Story
+ - Disable Story Seen (See friends's story without letting them know)
  - Hide Composer on News Feed
  - Hide Stories on News Feed
  - Support iOS 10 (not tested) - 11 (tested) - 12 (tested) - 13 (tested)
  - Support latest Facebook version (If it doesn't work, you should update the app to latest version >= 260.0)
- . 
- I collect uuid for better support and statistic purpose
  . 
  I work very hard to make good, free and open source tweaks for everyone
  If you want to support, you can buy me a coffee at https://www.paypal.me/haoict

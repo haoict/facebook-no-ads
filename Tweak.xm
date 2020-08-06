@@ -7,6 +7,8 @@ BOOL noads;
 BOOL canSaveVideo;
 BOOL hideNewsFeedComposer;
 BOOL hideNewsFeedStories;
+BOOL disableStorySeen;
+BOOL canSaveStory;
 
 static void reloadPrefs() {
   NSDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:@PLIST_PATH] ?: [@{} mutableCopy];
@@ -15,6 +17,8 @@ static void reloadPrefs() {
   canSaveVideo = [[settings objectForKey:@"canSaveVideo"] ?: @(YES) boolValue];
   hideNewsFeedComposer = [[settings objectForKey:@"hideNewsFeedComposer"] ?: @(NO) boolValue];
   hideNewsFeedStories = [[settings objectForKey:@"hideNewsFeedStories"] ?: @(NO) boolValue];
+  disableStorySeen = [[settings objectForKey:@"disableStorySeen"] ?: @(YES) boolValue];
+  canSaveStory = [[settings objectForKey:@"canSaveStory"] ?: @(YES) boolValue];
 }
 
 static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIViewController *viewController) {
@@ -197,6 +201,56 @@ static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIVie
   %end
 %end
 
+%group CanSaveStory
+  %hook FBSnacksMediaContainerView
+    %property (nonatomic, retain) UIButton *hDownloadButton;
+    - (id)initWithThread:(id)arg1 bucket:(id)arg2 mediaViewDelegate:(id)arg3 mediaViewGenerator:(id *)arg4 toolbox:(id)arg5 {
+      self = %orig;
+
+      self.hDownloadButton = [UIButton buttonWithType:UIButtonTypeCustom];
+      [self.hDownloadButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
+      [self.hDownloadButton addTarget:self action:@selector(hDownloadButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+      [self.hDownloadButton setBackgroundImage:[UIImage imageWithContentsOfFile:@"/Library/Application Support/facebooknoads/download.png"] forState:UIControlStateNormal];
+      self.hDownloadButton.frame = IS_iPAD ? CGRectMake([[UIApplication sharedApplication] keyWindow].frame.size.width / 2 + 60, [[UIApplication sharedApplication] keyWindow].frame.size.height - 140.0, 24.0, 24.0) : CGRectMake([[UIApplication sharedApplication] keyWindow].frame.size.width - 40, [[UIApplication sharedApplication] keyWindow].frame.size.height - ([HCommon isNotch] ? 190.0 : 90.0), 24.0, 24.0);
+      [self addSubview:self.hDownloadButton];
+      return self;
+    }
+
+    %new
+    - (void)hDownloadButtonPressed:(UIButton *)sender {
+      if ([self.mediaView isKindOfClass:%c(FBSnacksPhotoView)]) {
+        @try {
+          FBSnacksWebPhotoView *_snacksWebPhotoView = MSHookIvar<FBSnacksWebPhotoView *>(self.mediaView, "_photoView");
+          FBWebPhotoView *_photoView = MSHookIvar<FBWebPhotoView *>(_snacksWebPhotoView, "_photoView");
+          id imageSpecifier = _photoView.imageSpecifier;
+          if ([imageSpecifier isKindOfClass:%c(FBWebImageNetworkSpecifier)]) {
+            NSURL *url = ((FBWebImageNetworkSpecifier *)imageSpecifier).allInfoURLsSortedByDescImageFlag[0];
+            [[[HDownloadMediaWithProgress alloc] init] checkPermissionToPhotosAndDownloadURL:url appendExtension:nil mediaType:Image toAlbum:@"Facebook" view:self];
+          }
+          else if ([imageSpecifier isKindOfClass:%c(FBWebImageMemorySpecifier)]) {
+            UIImageWriteToSavedPhotosAlbum(((FBWebImageMemorySpecifier *)imageSpecifier).image, nil, nil, nil);
+            [HCommon showToastMessage:@"" withTitle:@"Done!" timeout:0.5 viewController:nil];
+          }
+        } @catch(NSException *exception) {
+          [HCommon showAlertMessage:exception.reason withTitle:@"Error" viewController:nil];
+        }
+      } else if ([self.mediaView isKindOfClass:%c(FBSnacksNewVideoView)]) {
+        FBVideoPlaybackItem *videoPlaybackItem = [((FBSnacksNewVideoView *)self.mediaView).manager currentVideoPlaybackItem];
+        showDownloadVideoAlert(videoPlaybackItem, [self reactViewController]);
+      } else {
+        [HCommon showAlertMessage:@"This story has no media to download. Seems like it's a bug. Please report to the developer" withTitle:@"Error" viewController:nil];
+      }
+    }
+  %end
+%end
+
+%group DisableStorySeen
+  %hook FBSnacksBucketsSeenStateManager
+    - (void)_sendSeenThreadIDsWithBucket:(id)arg1 session:(id)arg2 {
+    }
+  %end
+%end
+
 %ctor {
   CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback) reloadPrefs, CFSTR(PREF_CHANGED_NOTIF), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
   reloadPrefs();
@@ -215,6 +269,14 @@ static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIVie
 
   if (hideNewsFeedStories) {
     %init(HideNewsFeedChatRoomStories);
+  }
+
+  if (disableStorySeen) {
+    %init(DisableStorySeen);
+  }
+
+  if (canSaveStory) {
+    %init(CanSaveStory);
   }
 }
 
