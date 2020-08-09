@@ -5,20 +5,22 @@
  */
 BOOL noads;
 BOOL canSaveVideo;
+BOOL canSaveStory;
+BOOL canSaveOnlyMeProfilePicture;
+BOOL disableStorySeen;
 BOOL hideNewsFeedComposer;
 BOOL hideNewsFeedStories;
-BOOL disableStorySeen;
-BOOL canSaveStory;
 
 static void reloadPrefs() {
   NSDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:@PLIST_PATH] ?: [@{} mutableCopy];
 
   noads = [[settings objectForKey:@"noads"] ?: @(YES) boolValue];
   canSaveVideo = [[settings objectForKey:@"canSaveVideo"] ?: @(YES) boolValue];
+  canSaveStory = [[settings objectForKey:@"canSaveStory"] ?: @(YES) boolValue];
+  canSaveOnlyMeProfilePicture = [[settings objectForKey:@"canSaveOnlyMeProfilePicture"] ?: @(YES) boolValue];
+  disableStorySeen = [[settings objectForKey:@"disableStorySeen"] ?: @(YES) boolValue];
   hideNewsFeedComposer = [[settings objectForKey:@"hideNewsFeedComposer"] ?: @(NO) boolValue];
   hideNewsFeedStories = [[settings objectForKey:@"hideNewsFeedStories"] ?: @(NO) boolValue];
-  disableStorySeen = [[settings objectForKey:@"disableStorySeen"] ?: @(YES) boolValue];
-  canSaveStory = [[settings objectForKey:@"canSaveStory"] ?: @(YES) boolValue];
 }
 
 static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIViewController *viewController) {
@@ -244,6 +246,33 @@ static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIVie
   %end
 %end
 
+%group CanSaveOnlyMeProfilePicture
+  %hook FBPhotoViewController
+    %property (nonatomic, retain) UIButton *hDownloadButton;
+    - (void)viewDidAppear:(BOOL)arg1 {
+      %orig;
+
+      NSUInteger _actionSheetOptions = MSHookIvar<NSUInteger>(self, "_actionSheetOptions");
+      if (_actionSheetOptions != 0 || (self.hDownloadButton && [self.hDownloadButton isDescendantOfView:self.view])) {
+        return;
+      }
+
+      self.hDownloadButton = [UIButton buttonWithType:UIButtonTypeCustom];
+      [self.hDownloadButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
+      [self.hDownloadButton addTarget:self action:@selector(hDownloadButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+      [self.hDownloadButton setBackgroundImage:[UIImage imageWithContentsOfFile:@"/Library/Application Support/facebooknoads/download.png"] forState:UIControlStateNormal];
+      self.hDownloadButton.frame = CGRectMake([[UIApplication sharedApplication] keyWindow].frame.size.width - 40, [[UIApplication sharedApplication] keyWindow].frame.size.height - ([HCommon isNotch] ? 190.0 : 90.0), 24.0, 24.0);
+      [self.view addSubview:self.hDownloadButton];
+    }
+
+    %new
+    - (void)hDownloadButtonPressed:(UIButton *)sender {
+      UIImageWriteToSavedPhotosAlbum(self.displayedImage, nil, nil, nil);
+      [HCommon showToastMessage:@"" withTitle:@"Done!" timeout:0.5 viewController:nil];
+    }
+  %end
+%end
+
 %group DisableStorySeen
   %hook FBSnacksBucketsSeenStateManager
     - (void)_sendSeenThreadIDsWithBucket:(id)arg1 session:(id)arg2 {
@@ -255,6 +284,8 @@ static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIVie
   CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback) reloadPrefs, CFSTR(PREF_CHANGED_NOTIF), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
   reloadPrefs();
 
+  dlopen([[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"Frameworks/FBSharedDynamicFramework.framework/FBSharedDynamicFramework"] UTF8String], RTLD_NOW);
+
   if (noads) {
     %init(NoAds);
   }
@@ -263,20 +294,24 @@ static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIVie
     %init(CanSaveVideo);
   }
 
-  if (hideNewsFeedComposer) {
-    %init(HideNewsFeedComposer);
+  if (canSaveStory) {
+    %init(CanSaveStory);
   }
 
-  if (hideNewsFeedStories) {
-    %init(HideNewsFeedChatRoomStories);
+  if (canSaveOnlyMeProfilePicture) {
+    %init(CanSaveOnlyMeProfilePicture);
   }
 
   if (disableStorySeen) {
     %init(DisableStorySeen);
   }
 
-  if (canSaveStory) {
-    %init(CanSaveStory);
+  if (hideNewsFeedComposer) {
+    %init(HideNewsFeedComposer);
+  }
+
+  if (hideNewsFeedStories) {
+    %init(HideNewsFeedChatRoomStories);
   }
 }
 

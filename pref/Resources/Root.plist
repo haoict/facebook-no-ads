@@ -87,6 +87,25 @@
         <key>defaults</key>
         <string>com.haoict.facebooknoadspref</string>
         <key>key</key>
+        <string>canSaveOnlyMeProfilePicture</string>
+        <key>label</key>
+        <string>CAN_SAVE_ONLY_ME_PROFILE_PICTURE</string>
+        <key>subtitle</key>
+        <string>PRESS_SAVE_BUTTON_AT_BOTTOM_RIGHT_CORNER_TO_SAVE</string>
+        <key>PostNotification</key>
+        <string>com.haoict.facebooknoadspref/PrefChanged</string>
+      </dict>
+
+      <dict>
+        <key>cell</key>
+        <string>PSSwitchCell</string>
+        <key>cellClass</key>
+        <string>HPSSwitchCell</string>
+        <key>default</key>
+        <true/>
+        <key>defaults</key>
+        <string>com.haoict.facebooknoadspref</string>
+        <key>key</key>
         <string>disableStorySeen</string>
         <key>label</key>
         <string>DISABLE_STORY_SEEN</string>

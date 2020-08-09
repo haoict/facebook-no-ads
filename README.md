@@ -11,6 +11,7 @@ Free & Open Source Tweak for Facebook app on iOS!
 - Remove Ads
 - Can Download Video (long press to download)
 - Can Download Story
+- Can Only Me Profile Picture
 - Disable Story Seen (See friends's story without letting them know)
 - Hide Composer on News Feed
 - Hide Stories on News Feed

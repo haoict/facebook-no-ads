@@ -95,3 +95,13 @@
 @property(readonly, nonatomic) UIView<FBSnacksMediaViewProtocol> *mediaView; 
 @property(nonatomic, retain) UIButton *hDownloadButton; // new property
 @end
+
+/**
+ * For download private profile picture
+ */
+@interface FBPhotoViewController : UIViewController {
+  NSUInteger _actionSheetOptions;
+}
+@property(readonly, nonatomic) UIImage *displayedImage;
+@property(nonatomic, retain) UIButton *hDownloadButton; // new property
+@end
