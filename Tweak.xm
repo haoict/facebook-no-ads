@@ -23,10 +23,10 @@ static void reloadPrefs() {
   hideNewsFeedStories = [[settings objectForKey:@"hideNewsFeedStories"] ?: @(NO) boolValue];
 }
 
-static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIViewController *viewController) {
+static void showDownloadVideoAlert(NSURL *HDPlaybackURL, NSURL *SDPlaybackURL, UIViewController *viewController) {
   UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:IS_iPAD ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
   [alert addAction:[UIAlertAction actionWithTitle:@"Download Video - HD" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-    NSURL *videoURL = videoPlaybackItem.HDPlaybackURL;
+    NSURL *videoURL = HDPlaybackURL;
     if (!videoURL) {
       [HCommon showAlertMessage:@"This video doesn't have HD quality, please select other quality" withTitle:@"No HD quality" viewController:viewController];
       return;
@@ -35,7 +35,7 @@ static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIVie
     [[[HDownloadMediaWithProgress alloc] init] checkPermissionToPhotosAndDownload:videoURLString appendExtension:nil mediaType:Video toAlbum:@"Facebook" viewController:viewController];
   }]];
   [alert addAction:[UIAlertAction actionWithTitle:@"Download Video - SD" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-    NSURL *videoURL = videoPlaybackItem.SDPlaybackURL;
+    NSURL *videoURL = SDPlaybackURL;
     if (!videoURL) {
       [HCommon showAlertMessage:@"This video doesn't have SD quality, please select other quality" withTitle:@"No SD quality" viewController:viewController];
       return;
@@ -132,6 +132,12 @@ static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIVie
       return orig;
     }
 
+    - (id)nyc:(CGRect)arg1:(id)arg2 {
+      id orig = %orig;
+      [orig addHandleLongPress];
+      return orig;
+    }
+
     %new
     - (void)addHandleLongPress {
       UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
@@ -148,7 +154,7 @@ static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIVie
           return;
         }
 
-        showDownloadVideoAlert(videoPlaybackItem, [self reactViewController]);
+        showDownloadVideoAlert(videoPlaybackItem.HDPlaybackURL, videoPlaybackItem.SDPlaybackURL, [self reactViewController]);
       }
     }
   %end
@@ -197,7 +203,7 @@ static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIVie
           return;
         }
 
-        showDownloadVideoAlert(videoPlaybackItem, [self reactViewController]);
+        showDownloadVideoAlert(videoPlaybackItem.HDPlaybackURL, videoPlaybackItem.SDPlaybackURL, [self reactViewController]);
       }
     }
   %end
@@ -238,7 +244,7 @@ static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIVie
         }
       } else if ([self.mediaView isKindOfClass:%c(FBSnacksNewVideoView)]) {
         FBVideoPlaybackItem *videoPlaybackItem = [((FBSnacksNewVideoView *)self.mediaView).manager currentVideoPlaybackItem];
-        showDownloadVideoAlert(videoPlaybackItem, [self reactViewController]);
+        showDownloadVideoAlert(videoPlaybackItem.HDPlaybackURL, videoPlaybackItem.SDPlaybackURL, [self reactViewController]);
       } else {
         [HCommon showAlertMessage:@"This story has no media to download. Seems like it's a bug. Please report to the developer" withTitle:@"Error" viewController:nil];
       }
@@ -285,6 +291,7 @@ static void showDownloadVideoAlert(FBVideoPlaybackItem *videoPlaybackItem, UIVie
   reloadPrefs();
 
   dlopen([[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"Frameworks/FBSharedDynamicFramework.framework/FBSharedDynamicFramework"] UTF8String], RTLD_NOW);
+  // dlopen([[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"Frameworks/FBMessagingFramework.framework/FBMessagingFramework"] UTF8String], RTLD_NOW);
 
   if (noads) {
     %init(NoAds);

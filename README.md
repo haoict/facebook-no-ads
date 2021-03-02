@@ -15,7 +15,7 @@ Free & Open Source Tweak for Facebook app on iOS!
 - Disable Story Seen (See friends's story without letting them know)
 - Hide Composer on News Feed
 - Hide Stories on News Feed
-- Support iOS 10 (not tested) - 11 (tested) - 12 (tested) - 13 (tested)
+- Support iOS 12-14
 - Support latest Facebook version (If it doesn't work, you should update the app to latest version >= 260.0)
 
 ## Cydia Repo
