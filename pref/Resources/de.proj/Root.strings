@@ -1,0 +1,31 @@
+{
+"APPLY" = "Anwenden";
+"BUY_ME_A_COFFEE" = "Kauf mir einen Kaffee";
+"CANCEL" = "Abbrechen";
+"CAN_SAVE_ONLY_ME_PROFILE_PICTURE" = "Profilbild speichern";
+"CAN_SAVE_STORY" = "Story speichern";
+"CAN_SAVE_VIDEO" = "Video speichern";
+"CONFIRM" = "Bestätigen";
+"DEFAULT" = "Standard";
+"DISABLE_STORY_SEEN" = "Gesehene Story deaktivieren";
+"DONATION" = "Spende 💰";
+"DO_YOU_REALLY_WANT_TO_KILL_FACEBOOK" = "Willst du Facebook wirklich neu laden?";
+"FEATURE_REQUEST" = "Erweiterung anfragen ✨";
+"FOUND_A_BUG" = "Fehler gefunden 🐛";
+"HIDE_COMPOSER" = "Composer ausblenden";
+"HIDE_COMPOSER_ON_NEWS_FEED" = "Composer im Newsfeed ausblenden";
+"HIDE_ROOM_AND_STORIES" = "Room & Stories ausblenden";
+"HIDE_ROOM_AND_STORIES_ON_NEWS_FEED" = "Room & Stories im Newsfeed ausblenden";
+"LEAVE_A_BUG_REPORT_ON_GITHUB" = "Hinterlasse einen Fehlerbericht auf Github";
+"LONG_PRESS_ON_VIDEO_TO_SAVE" = "Lange auf das Video drücken zum Speichern";
+"MAIN_PREFERENCES" = "Haupteinstellungen";
+"NO_ADS" = "Keine Werbung";
+"OTHER_PREFERENCES" = "Andere Einstellungen";
+"PRESS_SAVE_BUTTON_AT_BOTTOM_RIGHT_CORNER_TO_SAVE" = "Taste in der unteren rechten Ecke drücken";
+"REMOVE_ADS_IN_NEWS_FEED" = "Werbung aus Newsfeed und Video entfernen";
+"RESET_SETTINGS" = "Einstellungen zurücksetzen";
+"SEE_FRIENDS_STORY_WITHOUT_LETTING_THEM_KNOW" = "Unbemerkt Stories von Freunden ansehen";
+"SEND_ME_AN_EMAIL_WITH_YOUR_REQUEST" = "Sende mir eine E-Mail mit Ihrer Anfrage";
+"SOURCE_CODE" = "Quellcode 🤖";
+"SUPPORT_ME" = "Unterstütze mich";
+}
